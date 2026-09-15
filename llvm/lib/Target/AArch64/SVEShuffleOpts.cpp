@@ -249,10 +249,10 @@ struct SVEShuffleOpts : public LoopPass {
 
     TargetPassConfig &TPC = getAnalysis<TargetPassConfig>();
     const AArch64TargetMachine &TM = TPC.getTM<AArch64TargetMachine>();
-    const AArch64Subtarget &ST =
-        *TM.getSubtargetImpl(*L->getHeader()->getParent());
+    const Function *F = L->getHeader()->getParent();
+    const AArch64Subtarget &ST = *TM.getSubtargetImpl(*F);
 
-    return processLoop(*L, ST, TM.createDataLayout());
+    return processLoop(*L, ST, F->getParent()->getDataLayout());
   }
 
   void getAnalysisUsage(AnalysisUsage &AU) const override {
